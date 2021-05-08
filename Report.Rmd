@@ -1,6 +1,6 @@
 ---
 title: 'Your Title Here'
-author: "Don Francisco"
+author: "Mikaela Kuan"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: pdf_document
 csl: bioinformatics.csl
@@ -8,7 +8,7 @@ bibliography: references.bib
 params:
   gff_file_path: "data/metadata/sars_refgenome_annotation.gff"
   vcf_dir_path: "data/11_vcf_output_for_R"
-  sra_runtable_path: "data/00_sra_runtable/SraRunTable_PRJNA656695_short_example.txt"
+  sra_runtable_path: "data/00_sra_runtable/SraRunTable.txt"
 ---
 
 ```{r setup, include = FALSE}
@@ -89,6 +89,20 @@ vcf_with_metadata %>%
 
 **Figure 1**: N and S genes have more unique SNPs in the set of samples analyzed.
 
+```{r snp-call-quality}
+vcf_with_metadata %>%
+  ggplot(aes(x = as.numeric(qual))) +
+    geom_histogram() +
+    labs(title = "Frequency of the Quality Scores in the SNPs from Shanghai",
+         x = "Quality Score",
+         y = "Frequency") +
+    theme_few()
+    
+
+```
+**Figure 2** The frequencies of the quality scores from Shanghai data. Quality scores less than 200 are not of high quality.
+
+
 # Tables
 
 ```{r example-table}
@@ -103,5 +117,18 @@ gene_table %>%
 ```
 
 **Table 1**: Gene names, locations, and lengths in the SARS-CoV-2 genome. Higher SNP counts in the S and N genes may be related to the larger size of these genes.
+
+```{r snp-frequency}
+# This is a figure to show the frequency of each SNP
+vcf_with_metadata %>%
+  select(pos, ref, alt) %>%
+  group_by(pos) %>%
+  tally() %>%
+  filter(n > 5) %>%
+  knitr::kable(col.names = c("SNP Position",
+                             "Frequency"))
+```
+
+**Table 2**: Frequency of each SNP position. The highest frequency was the SNPs in position 28144 and 8782. SNPs with frequencies less than five were removed from the table. 
 
 # Sources Cited
