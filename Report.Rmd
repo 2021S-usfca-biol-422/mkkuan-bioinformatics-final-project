@@ -43,6 +43,8 @@ library("vcfR")
 library("ggplot2")
 library("dplyr")
 library("ggthemes")
+library("magrittr")
+library("oxcovid19")
 
 # this loads all function files in the code/functions directory
 function_paths <- list.files("code/functions", full.names = TRUE)
@@ -81,14 +83,38 @@ vcf_with_metadata %>%
          y = "Frequency") +
     theme_few()
 ```
+
 **Figure 1.** The frequencies of the quality scores from Shanghai data. Quality scores less than 200 are not of high quality.
 
 ```{r hospitalization-my-data}
-
+# this is to visualize the frequency in collection date
+vcf_with_metadata %>%
+  group_by(Collection_Date) %>%
+  tally() %>%
+  ggplot(aes(x = lubridate::ymd(Collection_Date),
+             y = n)) +
+  geom_line() +
+  labs(title = "COVID-19 Samples Collected in Shanghai from January to February 2020",
+       x = "Date",
+       y = "Number of Collections") +
+  theme_few()
 ```
 
+**Figure 2.** The frequency of samples collected in Shanghai from late January to early February.
 
 ```{r hospitalization-oxcovid19-data}
+# this is to visualize the hospitalization records of China
+connect_oxcovid19() %>%
+  get_table(tbl_name = "epidemiology") %>%
+  filter(countrycode == "CHN", 
+         date > "2020-01-24" & date <"2020-02-16") %>%
+  group_by(date, confirmed) %>%
+  tally()
+  
+  ggplot(aes(x = lubridate::ymd(date), 
+             y = n)) +
+  geom_line() +
+  theme_few()
 ```
 
 # Tables
