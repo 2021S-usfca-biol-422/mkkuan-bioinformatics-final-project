@@ -1,5 +1,5 @@
 ---
-title: 'Your Title Here'
+title: 'Anaylsis of Shanghai Data from NCBI SARS-CoV-2 SRA Bioproject ID 627662'
 author: "Mikaela Kuan"
 date: "`r format(Sys.time(), '%d %B, %Y')`"
 output: pdf_document
@@ -71,24 +71,6 @@ vcf_with_metadata <- add_genes_metadata_to_vcfstack(
 
 # Figures
 
-```{r sample-plot}
-# create a plot of unique SNP locations within each gene across all samples
-vcf_with_metadata %>%
-  filter(!is.na(gene)) %>% # get rid of SNPs not in gene regions
-  group_by(gene, pos) %>%
-  tally() %>% # this gives a column n for the number of gene by position
-  group_by(gene) %>%
-  tally() %>% # this collapses that down to the number of unique SNP locations
-  ggplot(aes(x = gene,
-             y = n)) +
-    geom_col() +
-    labs(title = "Count of distinct SNPs in Named SARS-CoV-2 Genes",
-         x = "Gene Name") +
-  theme_few() # get rid of the grey background
-```
-
-**Figure 1**: N and S genes have more unique SNPs in the set of samples analyzed.
-
 ```{r snp-call-quality}
 vcf_with_metadata %>%
   ggplot(aes(x = as.numeric(qual))) +
@@ -100,23 +82,10 @@ vcf_with_metadata %>%
     
 
 ```
-**Figure 2** The frequencies of the quality scores from Shanghai data. Quality scores less than 200 are not of high quality.
+**Figure 1** The frequencies of the quality scores from Shanghai data. Quality scores less than 200 are not of high quality.
 
 
 # Tables
-
-```{r example-table}
-# An example table to show the length of each gene using its start and end
-gene_table %>%
-  mutate(length = end - start) %>%
-  select(gene_name, start, end, length) %>%
-  knitr::kable(col.names = c("Gene Name",
-                             "Start",
-                             "End",
-                             "Length"))
-```
-
-**Table 1**: Gene names, locations, and lengths in the SARS-CoV-2 genome. Higher SNP counts in the S and N genes may be related to the larger size of these genes.
 
 ```{r snp-frequency}
 # This is a figure to show the frequency of each SNP
@@ -129,6 +98,40 @@ vcf_with_metadata %>%
                              "Frequency"))
 ```
 
-**Table 2**: Frequency of each SNP position. The highest frequency was the SNPs in position 28144 and 8782. SNPs with frequencies less than five were removed from the table. 
+**Table 1**: Frequency of each SNP position. The highest frequency was the SNPs in position 28144 and 8782. SNPs with frequencies less than five were removed from the table. 
+
+```{r snp-pos-28144}
+pos_1 <- vcf_with_metadata %>%
+  select(pos, ref, alt) %>%
+  filter(pos == "28144") %>%
+  group_by(pos, ref, alt) %>%
+  tally()
+  
+pos_2 <- vcf_with_metadata %>%
+  select(pos, ref, alt) %>%
+  filter(pos == "8782") %>%
+  group_by(pos, ref, alt) %>%
+  tally()
+
+pos_3 <- vcf_with_metadata %>%
+  select(pos, ref, alt) %>%
+  filter(pos == "29742") %>%
+  group_by(pos, ref, alt) %>%
+  tally()
+
+pos_4 <- vcf_with_metadata %>%
+  select(pos, ref, alt) %>%
+  filter(pos == "11083") %>%
+  group_by(pos, ref, alt) %>%
+  tally()
+
+rbind(pos_1, pos_2, pos_3, pos_4) %>%
+  knitr::kable(col.names = c("SNP Position",
+                             "Reference Nucleotide",
+                             "Altered Nucleotide", 
+                             "Frequency"))
+```
+
+**Table 2** Frequency of the SNPs and its different changes of the top four frequent SNPs. 
 
 # Sources Cited
