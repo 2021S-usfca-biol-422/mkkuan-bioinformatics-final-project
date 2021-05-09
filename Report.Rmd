@@ -106,16 +106,21 @@ vcf_with_metadata %>%
 # this is to visualize the hospitalization records of China
 connect_oxcovid19() %>%
   get_table(tbl_name = "epidemiology") %>%
-  filter(countrycode == "CHN", 
+  dplyr::filter(countrycode == "CHN", 
          date > "2020-01-24" & date <"2020-02-16") %>%
-  group_by(date, confirmed) %>%
-  tally()
-  
+  dplyr::group_by(date) %>%
+  dplyr::summarise(sum_confirmed = sum(confirmed)) %>%
   ggplot(aes(x = lubridate::ymd(date), 
-             y = n)) +
+             y = as.numeric(sum_confirmed))) +
   geom_line() +
+  labs(title = "COVID-19 Hospitalization in China from January to February 2020",
+       x = "Date",
+       y = "Number of People Hospitalized") +
   theme_few()
+
 ```
+
+**Figure 3.** Hospitalization records in China from late January to early February. 
 
 # Tables
 
