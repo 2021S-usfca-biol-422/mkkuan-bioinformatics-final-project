@@ -116,6 +116,7 @@ connect_oxcovid19() %>%
   labs(title = "COVID-19 Hospitalization in China from January to February 2020",
        x = "Date",
        y = "Number of People Hospitalized") +
+  scale_y_continuous(labels = scales::comma) +
   theme_few()
 
 ```
