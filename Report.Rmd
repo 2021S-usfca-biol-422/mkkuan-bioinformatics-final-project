@@ -104,7 +104,8 @@ Overall, this study shows that variants from the Shanghai samples taken from NCB
 # Figures
 
 ```{r snp-call-quality}
-# this is to visualize the SNPs quality scores of all the samples in the SHanghai data
+# this is to visualize the SNPs quality scores of all the samples in the
+# Shanghai data
 vcf_with_metadata %>%
   ggplot(aes(x = as.numeric(qual))) +
     geom_histogram() +
@@ -124,7 +125,8 @@ vcf_with_metadata %>%
   ggplot(aes(x = lubridate::ymd(Collection_Date),
              y = n)) +
   geom_line() +
-  labs(title = "COVID-19 Samples Collected in Shanghai from January to \nFebruary 2020",
+  labs(title = "COVID-19 Samples Collected in Shanghai from January to
+                \nFebruary 2020",
        x = "Date",
        y = "Number of Collections") +
   theme_few()
@@ -136,14 +138,15 @@ vcf_with_metadata %>%
 # this is to visualize the hospitalization records of China
 connect_oxcovid19() %>%
   get_table(tbl_name = "epidemiology") %>%
-  dplyr::filter(countrycode == "CHN", 
-         date > "2020-01-24" & date <"2020-02-16") %>%
+  dplyr::filter(countrycode == "CHN",
+         date > "2020-01-24" & date < "2020-02-16") %>%
   dplyr::group_by(date) %>%
   dplyr::summarise(sum_confirmed = sum(confirmed)) %>%
-  ggplot(aes(x = lubridate::ymd(date), 
+  ggplot(aes(x = lubridate::ymd(date),
              y = as.numeric(sum_confirmed))) +
   geom_line() +
-  labs(title = "COVID-19 Hospitalization in China from January to \n February 2020",
+  labs(title = "COVID-19 Hospitalization in China from January to
+                \n February 2020",
        x = "Date",
        y = "Number of People Hospitalized") +
   scale_y_continuous(labels = scales::comma) +
@@ -157,15 +160,16 @@ connect_oxcovid19() %>%
 # this is to visualize the hospitalization records of Shanghai
 connect_oxcovid19() %>%
   get_table(tbl_name = "epidemiology") %>%
-  dplyr::filter(countrycode == "CHN", 
-         date > "2020-01-24" & date <"2020-02-16",
+  dplyr::filter(countrycode == "CHN",
+         date > "2020-01-24" & date < "2020-02-16",
          adm_area_1 == "Shanghai") %>%
   dplyr::group_by(date) %>%
   dplyr::summarise(sum_confirmed = sum(confirmed)) %>%
-  ggplot(aes(x = lubridate::ymd(date), 
+  ggplot(aes(x = lubridate::ymd(date),
              y = as.numeric(sum_confirmed))) +
   geom_line() +
-  labs(title = "COVID-19 Hospitalization in Shanghai from January to \n February 2020",
+  labs(title = "COVID-19 Hospitalization in Shanghai from January to
+                \n February 2020",
        x = "Date",
        y = "Number of People Hospitalized") +
   scale_y_continuous(labels = scales::comma) +
@@ -221,7 +225,7 @@ pos_4 <- vcf_with_metadata %>%
 rbind(pos_1, pos_2, pos_3, pos_4) %>%
   knitr::kable(col.names = c("SNP Position",
                              "Reference Nucleotide",
-                             "Altered Nucleotide", 
+                             "Altered Nucleotide",
                              "Frequency"))
 ```
 
@@ -251,7 +255,7 @@ snp_qual_4 <- vcf_with_metadata %>%
 
 rbind(snp_qual_1, snp_qual_2, snp_qual_3, snp_qual_4) %>%
   knitr::kable(col.names = c("SNP Position",
-                             "Quality Score", 
+                             "Quality Score",
                              "Frequency"))
 ```
 
