@@ -2,7 +2,7 @@
 Mikaela Kuan
 mkkuan@dons.usfca.edu
 
-## Ideas
+## Overview of what I plan to do
 
 Parts of this pipeline approach are based on the pipeline described in the [Data Carpentry Genomics lessons](https://datacarpentry.org/genomics-workshop/), which are made available under a [CC-BY 4.0 license](https://creativecommons.org/licenses/by/4.0/).
 
@@ -12,7 +12,7 @@ All NCBI SARS-CoV-2 datasets can be found from the following URL: https://www.nc
 
 Since the data is from the beginning half of 2020, I want to see if there are any trends in the data and hospitalization in China. Because SARS-CoV-2 strain variants are popping up in 2021, I also want to start by seeing if there were any variants in the strains found in Shanghai.
 
-I will first start by analyzing the template repository and create a graph to see the hospitalization during the the first half of 2020. Then I will look at the data I chose and create a graph to compare with the template data given. Then I will sort both datasets by the variants and see if any matches the COVID varaints from [this article](https://www.nytimes.com/interactive/2021/health/coronavirus-variant-tracker.html).
+I will first start by analyzing the oxcovid19 repository and create a graph to see the hospitalization during the the first half of 2020. Then I will look at the data I chose and create a graph to compare with the oxcovid19 data given. Then I will sort both datasets by the variants and see if any matches the COVID variants from [this article](https://www.nytimes.com/interactive/2021/health/coronavirus-variant-tracker.html). I will also look at the quality scores of the samples from the NCBI data to see how high quality the scores are. I will focus mainly on the most common SNPs in the NCBI data.
 
 ## How to run this project
 
